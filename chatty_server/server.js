@@ -30,21 +30,18 @@ wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === webSocket.OPEN) {
       const dataObject = JSON.parse(data);
-      switch (dataObject.type) {
-        case "message":
+      dataObject.id = uuid();
 
-          dataObject.id = uuid();
+      switch (dataObject.type) {
+        case "postMessage":
+
+          dataObject.type = "incomingMessage";
           client.send(JSON.stringify(dataObject));
           break;
 
-        case "changeUser":
-          const notification = dataObject.oldName + " has change their name to " + dataObject.newName;
-          const response = {
-            type: "changeUser",
-            content: notification
-          }
-          console.log(response);
-          client.send(JSON.stringify(response));
+        case "postNotification":
+          dataObject.type = "incomingNotification";
+          client.send(JSON.stringify(dataObject));
           break;
       }
     }

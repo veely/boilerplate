@@ -32,15 +32,16 @@ class App extends Component {
   }
 
   addMessage = (newMessage) => {
-    newMessage.type = "message";
+    newMessage.type = "postMessage";
     this.chattySocket.send(JSON.stringify(newMessage));
   }
 
   changeUser = (username) => {
+    const oldName = this.state.currentUser.name;
+    const notification = oldName + " has change their name to " + username;
     const changeUserObj = {
-      oldName: this.state.currentUser.name,
-      newName: username,
-      type: "changeUser"
+      content: notification,
+      type: "postNotification"
     };
     this.chattySocket.send(JSON.stringify(changeUserObj));
     this.setState({ currentUser: {name: username} });
