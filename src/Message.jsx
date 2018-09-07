@@ -34,6 +34,19 @@ export default class Message extends Component {
           </div>
         )
         break;
+      case "clientDisconnected":
+        return (
+          <div>
+            <span className="message-notification">{this.props.message.content}</span>
+          </div>
+        )
+        break;
+      default:
+        return (
+          <div>
+            <span className="message-error">Error: Something went wrong!</span>
+          </div>
+        )
     }
   }
 }

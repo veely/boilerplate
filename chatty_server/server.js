@@ -50,6 +50,10 @@ wss.broadcast = function broadcast(data) {
           dataObject.numberOnline = wss.clients.size;
           client.send(JSON.stringify(dataObject));
           break;
+        case "clientDisconnected":
+          dataObject.numberOnline = wss.clients.size;
+          client.send(JSON.stringify(dataObject));
+          break;
       }
     }
   });
@@ -61,5 +65,15 @@ wss.on('connection', function connection(socket) {
   socket.on('message', function incoming(message) {
     console.log('received: %s', message);
     wss.broadcast(message)
+  });
+
+  socket.on('close', () => {
+    const disconnectMsg = {
+      content: "Client disconnected",
+      usersOnline: wss.clients.size,
+      type: "clientDisconnected"
+    };
+    wss.broadcast(JSON.stringify(disconnectMsg));
+    console.log('Client disconnected');
   });
 });

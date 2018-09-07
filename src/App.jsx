@@ -66,11 +66,17 @@ class App extends Component {
         const newMessages = [...oldMessages, broadcastMsg];
         if (broadcastMsg.type === "clientConnected") {
           const numberOnline = broadcastMsg.numberOnline;
-          console.log(numberOnline);
           this.setState({
             messages: newMessages,
             usersOnline: numberOnline
           });
+        } else if (broadcastMsg.type === "clientDisconnected") {
+          const numberOnline = broadcastMsg.numberOnline;
+          this.setState({
+            messages: newMessages,
+            usersOnline: numberOnline
+          });
+          console.log(this.state);
         } else {
           this.setState({
             messages: newMessages
@@ -79,6 +85,7 @@ class App extends Component {
 
       }
     }
+
   }
 
   render() {
