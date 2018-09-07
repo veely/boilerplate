@@ -69,7 +69,7 @@ wss.on('connection', function connection(socket) {
 
   socket.on('close', () => {
     const disconnectMsg = {
-      content: "Client disconnected",
+      content: "A user has disconnected.",
       usersOnline: wss.clients.size,
       type: "clientDisconnected"
     };
