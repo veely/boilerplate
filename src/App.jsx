@@ -50,7 +50,6 @@ class App extends Component {
 
 
   componentDidMount() {
-    console.log("componentDidMount <App />");
     this.chattySocket.onopen = (openEvent) => {
       console.log('Connection established');
       const connectMsg = "User " + this.state.currentUser.name + " has connected to the chat server.";
@@ -76,7 +75,6 @@ class App extends Component {
             messages: newMessages,
             usersOnline: numberOnline
           });
-          console.log(this.state);
         } else {
           this.setState({
             messages: newMessages
@@ -93,7 +91,7 @@ class App extends Component {
       <body>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
-          <h2>Users online: {this.state.usersOnline}</h2>
+          <h2 className="users-online">Users online: {this.state.usersOnline}</h2>
         </nav>
         <ChatBar currentUser={this.state.currentUser.name} addMessage={this.addMessage} changeUser={this.changeUser}/>
         <MessageList messages={this.state.messages} />
