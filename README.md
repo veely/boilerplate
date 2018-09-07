@@ -27,6 +27,6 @@ npm start
 
 ### Screenshots
 
-["Changing your display name"](https://github.com/veely/chatty-app/blob/master/docs/change_name.png)
-["New user connecting to chat server"](https://github.com/veely/chatty-app/blob/master/docs/user_connect.png)
-["Chatting with others online"](https://github.com/veely/chatty-app/blob/master/docs/chat.png)
+!["Changing your display name"](https://github.com/veely/chatty-app/blob/master/docs/change_name.png)
+!["New user connecting to chat server"](https://github.com/veely/chatty-app/blob/master/docs/user_connect.png)
+!["Chatting with others online"](https://github.com/veely/chatty-app/blob/master/docs/chat.png)
