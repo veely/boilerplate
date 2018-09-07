@@ -40,7 +40,14 @@ wss.broadcast = function broadcast(data) {
           break;
 
         case "postNotification":
+
           dataObject.type = "incomingNotification";
+          client.send(JSON.stringify(dataObject));
+          break;
+
+        case "clientConnecting":
+          dataObject.type = "clientConnected";
+          dataObject.numberOnline = wss.clients.size;
           client.send(JSON.stringify(dataObject));
           break;
       }
@@ -49,6 +56,8 @@ wss.broadcast = function broadcast(data) {
 };
 
 wss.on('connection', function connection(socket) {
+
+  // wss.broadcast(wss.clients.size);
   socket.on('message', function incoming(message) {
     console.log('received: %s', message);
     wss.broadcast(message)

@@ -4,7 +4,7 @@ import MessageList from './MessageList.jsx';
 
 
 const data = {
-  currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+  currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
   messages: [
     {
       id: "e018d",
@@ -24,7 +24,8 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: data.currentUser,
-      messages: []
+      messages: [],
+      usersOnline: 0
     };
     this.addMessage = this.addMessage.bind(this);
     this.changeUser = this.changeUser.bind(this);
@@ -52,12 +53,30 @@ class App extends Component {
     console.log("componentDidMount <App />");
     this.chattySocket.onopen = (openEvent) => {
       console.log('Connection established');
-
+      const connectMsg = "User " + this.state.currentUser.name + " has connected to the chat server.";
+      const userClient = {
+        content: connectMsg,
+        type: "clientConnecting"
+      };
+      this.chattySocket.send(JSON.stringify(userClient));
       this.chattySocket.onmessage = (event) => {
+
         const broadcastMsg = JSON.parse(event.data);
         const oldMessages = this.state.messages;
         const newMessages = [...oldMessages, broadcastMsg];
-        this.setState({messages: newMessages});
+        if (broadcastMsg.type === "clientConnected") {
+          const numberOnline = broadcastMsg.numberOnline;
+          console.log(numberOnline);
+          this.setState({
+            messages: newMessages,
+            usersOnline: numberOnline
+          });
+        } else {
+          this.setState({
+            messages: newMessages
+          });
+        }
+
       }
     }
   }
@@ -67,6 +86,7 @@ class App extends Component {
       <body>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <h2>Users online: {this.state.usersOnline}</h2>
         </nav>
         <ChatBar currentUser={this.state.currentUser.name} addMessage={this.addMessage} changeUser={this.changeUser}/>
         <MessageList messages={this.state.messages} />
